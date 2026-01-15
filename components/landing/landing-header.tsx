@@ -26,12 +26,12 @@ export function LandingHeader() {
 
             <div className="flex items-center gap-3">
                <SignedOut>
-                  <SignInButton mode="modal">
+                  <SignInButton mode="modal" forceRedirectUrl={"/availability"}>
                      <Button variant="ghost" size="sm">
                         Sign In
                      </Button>
                   </SignInButton>
-                  <SignUpButton mode="modal">
+                  <SignUpButton mode="modal" forceRedirectUrl={"/availability"}>
                      <Button size="sm" className="bg-blue-500 hover:bg-blue-600">
                         Get Started
                      </Button>
