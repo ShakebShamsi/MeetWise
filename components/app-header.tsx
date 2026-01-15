@@ -46,7 +46,7 @@ export function AppHeader() {
             <div className="flex items-center gap-4 sm:gap-8">
                <Link href="/availability" className="flex items-center gap-2">
                   <span className="text-xl font-bold tracking-tight text-white">
-                     Calvero
+                     MeetWise
                   </span>
                </Link>
 
