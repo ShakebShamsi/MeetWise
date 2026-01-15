@@ -3,6 +3,7 @@ import { FeaturesSection } from "@/components/landing/features-section";
 import { HeroSection } from "@/components/landing/hero-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { IntegrationSection } from "@/components/landing/integration-section";
+import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHeader } from "@/components/landing/landing-header";
 import Image from "next/image";
 
@@ -15,6 +16,7 @@ export default function Home() {
          <HowItWorksSection />
          <IntegrationSection />
          <CTASection />
+         {/* <LandingFooter /> */}
 
       </div>
    );
