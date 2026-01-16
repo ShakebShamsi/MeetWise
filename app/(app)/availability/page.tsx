@@ -45,24 +45,34 @@ export default async function AvailabilityPage() {
    const { activeBookings } = await processBookingsWithStatuses(bookings ?? []);
 
    // Transform to BookedBlock format
-   const bookedBlocks: BookedBlock[] = activeBookings.map((booking) => ({
-      id: booking._id,
-      start: new Date(booking.startTime),
-      end: new Date(booking.endTime),
-      guestName: booking.guestName,
-      guestEmail: booking.guestEmail,
-      googleEventId: booking.googleEventId ?? undefined,
-      meetLink: booking.meetLink ?? undefined,
-      attendeeStatus: booking.guestStatus,
-   }));
+   const bookedBlocks: BookedBlock[] = activeBookings
+      .filter(
+         (booking) =>
+            booking.startTime &&
+            booking.endTime &&
+            booking.guestName &&
+            booking.guestEmail,
+      )
+      .map((booking) => ({
+         id: booking._id,
+         start: new Date(booking.startTime!),
+         end: new Date(booking.endTime!),
+         guestName: booking.guestName!,
+         guestEmail: booking.guestEmail!,
+         googleEventId: booking.googleEventId ?? undefined,
+         meetLink: booking.meetLink ?? undefined,
+         attendeeStatus: booking.guestStatus,
+      }));
 
    // Transform Sanity data to TimeBlock format
    // We show the FULL availability as stored in Sanity (bookings are displayed separately as green blocks)
-   const initialBlocks: TimeBlock[] = availability.map((slot) => ({
-      id: slot._key,
-      start: new Date(slot.startDateTime),
-      end: new Date(slot.endDateTime),
-   }));
+   const initialBlocks: TimeBlock[] = availability
+      .filter((slot) => slot.startDateTime && slot.endDateTime)
+      .map((slot) => ({
+         id: slot._key,
+         start: new Date(slot.startDateTime!),
+         end: new Date(slot.endDateTime!),
+      }));
 
    // Filter out busy times that overlap with our bookings (to avoid duplication)
    const isOverlappingWithBooking = (busyStart: Date, busyEnd: Date) =>
