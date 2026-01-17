@@ -164,7 +164,6 @@ Before you begin, make sure you have:
 - **Node.js 18.17+** — [Download](https://nodejs.org/)
 - **pnpm** — Install with `npm install -g pnpm`
 - **Clerk account** — [Sign up](https://go.clerk.com/hIH1icu)
-- **Sanity account** — [Sign up](https://www.sanity.io/sonny?utm_source=youtube&utm_medium=video&utm_content=scheduling-platform)
 - **Google Cloud project** — With Calendar API enabled
 
 ### Step-by-Step Setup
