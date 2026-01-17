@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { Calendar } from "lucide-react";
-import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { UsersIcon } from "@sanity/icons";
+import { User } from "@clerk/nextjs/server";
+import { UserAvatar } from "sanity";
 
 export function LandingHeader() {
    return (
@@ -42,6 +45,7 @@ export function LandingHeader() {
                      <Link href="/availability">Dashboard</Link>
                   </Button>
                </SignedIn>
+               <UserButton />
             </div>
          </div>
       </header>
