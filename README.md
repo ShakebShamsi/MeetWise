@@ -37,7 +37,6 @@ Before cloning this repo, create accounts with these services:
 | Service | Purpose | Link |
 |---------|---------|------|
 | **Clerk** | Authentication & Subscription Billing | [Sign up for Clerk](https://go.clerk.com/hIH1icu) |
-| **Sanity** | Content Management & Real-time Data | [Sign up for Sanity](https://www.sanity.io/sonny?utm_source=youtube&utm_medium=video&utm_content=scheduling-platform) _(Use coupon `sonny` for 60-day extended trial!)_ |
 | **Google Cloud** | Calendar API for syncing events | [Google Cloud Console](https://console.cloud.google.com/) |
 | **Vercel** | Deployment (optional for local dev) | [Vercel](https://vercel.com/) |
 
@@ -90,8 +89,6 @@ This project is part of my mission to teach developers how to build real-world a
 - **Career guidance** — Learn what employers actually want
 
 ### Ready to Level Up?
-
-👉 **[Join the PAPAFAM Course](https://www.papareact.com/course)**
 
 ---
 
@@ -468,39 +465,6 @@ pnpm typegen
 
 ---
 
-## 🏆 Take It Further — Challenge Time!
-
-Ready to level up? Here are some features you can add to make this app even better:
-
-### Beginner Challenges
-- [ ] Add a "Copy booking link" button with toast notification
-- [ ] Show booking confirmation page after successful booking
-- [ ] Add loading states for all async operations
-
-### Intermediate Challenges
-- [ ] **Email notifications** — Send confirmation emails using [Resend](https://resend.com/) or [SendGrid](https://sendgrid.com/)
-- [ ] **Buffer time** — Add configurable gaps between meetings
-- [ ] **Recurring availability** — Set weekly patterns instead of individual slots
-- [ ] **Meeting notes** — Allow guests to add context before the call
-
-### Advanced Challenges
-- [ ] **Team accounts** — Multiple users sharing a booking page
-- [ ] **Stripe integration** — Alternative to Clerk Billing
-- [ ] **Waitlist feature** — Let guests join a waitlist for fully booked slots
-- [ ] **Calendar embed** — Allow hosts to embed their calendar on external sites
-- [ ] **Webhooks** — Notify external services when bookings are created/cancelled
-- [ ] **Analytics dashboard** — Track booking trends, popular times, conversion rates
-
-### AI-Powered Features
-- [ ] **Smart scheduling** — Suggest optimal meeting times based on patterns
-- [ ] **Meeting prep** — Generate agendas based on guest info
-- [ ] **Follow-up automation** — Draft follow-up emails after meetings
-
----
-
-## 📄 License
-
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License** (CC BY-NC 4.0).
 
 ### You CAN:
 - ✅ Use this code for **personal learning**
@@ -508,22 +472,6 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial 
 - ✅ **Share** your modifications with proper attribution
 - ✅ Use as a **portfolio piece** to showcase your skills
 
-### You CANNOT:
-- ❌ Use this code for **commercial purposes**
-- ❌ Sell this code or applications built from it
-- ❌ Remove attribution to the original author
-
-### Attribution
-When sharing or building upon this project, please include:
-
-```
-Built by Sonny Sangha (PAPA React)
-https://www.papareact.com
-```
-
-For commercial licensing inquiries, please contact through [papareact.com](https://www.papareact.com).
-
-See [LICENSE.md](LICENSE.md) for full license text.
 
 ---
 
@@ -585,13 +533,8 @@ pnpm typegen          # Generate TypeScript types from Sanity schema
 
 ## 🙏 Acknowledgments
 
-Built with love by [Sonny Sangha](https://www.papareact.com) for the PAPAFAM community.
+Built with love by [Shakeb Shamsi](https://www.shakeb.onrender.com)
 
-Special thanks to:
-- [Clerk](https://clerk.com) for authentication and billing
-- [Sanity](https://sanity.io) for the incredible CMS
-- [Vercel](https://vercel.com) for hosting
-- The PAPAFAM community for continuous support and feedback
 
 ---
 
@@ -600,4 +543,4 @@ Special thanks to:
 If you found this helpful, consider:
 - ⭐ Starring this repository
 - 🐦 Sharing on social media
-- 👨‍💻 [Joining the PAPAFAM course](https://www.papareact.com/course)
+  
