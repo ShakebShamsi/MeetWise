@@ -68,30 +68,6 @@ Here's how it works in plain English:
 
 ---
 
-## 🚀 Before We Dive In — Join the PAPAFAM!
-
-**Want to build apps like this from scratch?**
-
-This project is part of my mission to teach developers how to build real-world applications. If you're serious about leveling up your development skills, consider joining the PAPAFAM community!
-
-### What You'll Master
-- Full-stack development with Next.js and React
-- Authentication patterns and subscription billing
-- Working with headless CMS (Sanity)
-- API integrations (Google Calendar, OAuth2)
-- Deployment and production best practices
-- Building beautiful UIs with Tailwind CSS and Shadcn
-
-### Why Join the PAPAFAM?
-- **Live builds** — Watch me build projects from scratch
-- **Community support** — Get help when you're stuck
-- **Portfolio projects** — Build impressive apps to showcase
-- **Career guidance** — Learn what employers actually want
-
-### Ready to Level Up?
-
----
-
 ## ✨ Features
 
 ### For End Users
