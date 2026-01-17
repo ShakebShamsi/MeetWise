@@ -11,39 +11,39 @@ import { FeatureCard } from "./feature-card";
 const features = [
    {
       icon: Calendar,
-      title: "Intelligent Availability",
+      title: "Smart Availability",
       description:
-         "Define your availability effortlessly with a visual, drag-and-drop calendar. MeetWise manages the rest automatically.",
+         "Set your availability with an intuitive drag-and-drop calendar. Create time blocks visually and let MeetWise handle the rest.",
    },
    {
       icon: Video,
-      title: "Seamless Google Calendar Sync",
+      title: "Google Calendar Sync",
       description:
-         "Connect multiple Google calendars to sync busy times instantly and avoid double bookings across all schedules.",
+         "Connect multiple Google accounts to automatically sync busy times and prevent double bookings across all your calendars.",
    },
    {
       icon: Zap,
-      title: "One-Click Google Meet",
+      title: "Instant Google Meet",
       description:
-         "Every meeting includes an auto-generated Google Meet link—no setup, no extra steps required.",
+         "Every booking automatically generates a Google Meet link. No manual setup required for your video meetings.",
    },
    {
       icon: Clock,
-      title: "Custom Meeting Formats",
+      title: "Flexible Meeting Types",
       description:
-         "Design meetings that fit your workflow, from quick 15-minute check-ins to deep 90-minute sessions.",
+         "Create different meeting types with custom durations. Quick 15-minute chats or deep 90-minute consultations.",
    },
    {
       icon: Globe,
-      title: "Smart Timezone Handling",
+      title: "Timezone Intelligence",
       description:
-         "Availability is automatically displayed in each guest’s local timezone, eliminating confusion completely.",
+         "Automatic timezone detection shows guests availability in their local time. No confusion, no missed meetings.",
    },
    {
       icon: CalendarCheck,
-      title: "Live Booking Insights",
+      title: "Real-Time Updates",
       description:
-         "Track booking status in real time and instantly see who has confirmed, declined, or is pending.",
+         "Track booking status with live attendee responses. See who accepted, declined, or is still deciding.",
    },
 ];
 
@@ -53,11 +53,11 @@ export function FeaturesSection() {
          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-white">
-                  Everything you need to schedule smarter with MeetWise
+                  Everything you need to manage your schedule
                </h2>
                <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-                  A powerful set of tools designed to remove scheduling hassles and
-                  help you focus on what truly matters.
+                  Powerful features designed to eliminate scheduling friction and
+                  help you focus on what matters.
                </p>
             </div>
 

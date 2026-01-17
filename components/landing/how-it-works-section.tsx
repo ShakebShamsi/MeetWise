@@ -1,27 +1,27 @@
 const steps = [
    {
       number: "01",
-      title: "Define Your Availability",
+      title: "Set Your Availability",
       description:
-         "Use the interactive calendar to visually set time slots when you’re available. Sync your Google Calendar to automatically block busy periods.",
+         "Use the visual calendar to drag and create time blocks when you're free to meet. Connect your Google Calendar to automatically block busy times.",
    },
    {
       number: "02",
-      title: "Set Up Meeting Options",
+      title: "Create Meeting Types",
       description:
-         "Create multiple meeting types such as quick catch-ups, consultations, or intro calls, each with its own custom duration.",
+         "Define different meeting types like consultations, quick chats, or discovery calls. Set custom durations for each type.",
    },
    {
       number: "03",
-      title: "Share Your Booking Link",
+      title: "Share Your Link",
       description:
-         "Send your personalized MeetWise link. Invitees choose a meeting type, view available slots in their timezone, and book instantly.",
+         "Share your personalized booking link. Guests select a meeting type, pick an available slot in their timezone, and book instantly.",
    },
    {
       number: "04",
-      title: "Join Meetings Seamlessly",
+      title: "Meet with Confidence",
       description:
-         "Get instant booking confirmations with auto-generated Google Meet links. Monitor responses and manage all meetings from one dashboard.",
+         "Receive booking confirmations with auto-generated Google Meet links. Track attendee responses and manage all your bookings in one place.",
    },
 ];
 
@@ -34,7 +34,7 @@ export function HowItWorksSection() {
                   How MeetWise works
                </h2>
                <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-                  Get started in minutes with a simple, no-stress setup.
+                  Get up and running in minutes. No complicated setup required.
                </p>
             </div>
 

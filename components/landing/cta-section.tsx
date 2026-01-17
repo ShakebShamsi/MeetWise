@@ -12,7 +12,7 @@ export function CTASection() {
                </h2>
                <p className="mt-4 text-lg text-blue-100">
                   Join thousands of professionals who save hours every week with
-                  Meetwise.
+                  MeetWise.
                </p>
                <div className="mt-10">
                   <SignedOut>

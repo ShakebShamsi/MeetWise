@@ -55,11 +55,11 @@ export async function processBookingsWithStatuses<
   // This also deletes any bookings whose Google Calendar events are cancelled/deleted
   const statuses = await getBookingAttendeeStatuses(
     bookings
-      .filter((b) => b.googleEventId && b.guestEmail)
+      .filter((b) => b.googleEventId)
       .map((b) => ({
         id: b._id,
         googleEventId: b.googleEventId,
-        guestEmail: b.guestEmail!,
+        guestEmail: b.guestEmail,
       }))
   );
 

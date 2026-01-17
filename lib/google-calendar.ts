@@ -157,13 +157,12 @@ export async function fetchCalendarEvents(
 
       for (const event of data.items ?? []) {
         // Skip all-day events (they have date instead of dateTime)
-         if (!event.start?.dateTime || !event.end?.dateTime) continue;
-         if (!account.email) continue;
+        if (!event.start?.dateTime || !event.end?.dateTime) continue;
         events.push({
           start: new Date(event.start.dateTime),
           end: new Date(event.end.dateTime),
           title: event.summary ?? "Busy",
-          accountEmail: account?.email,
+          accountEmail: account.email,
         });
       }
     } catch (error) {

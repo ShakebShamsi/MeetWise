@@ -12,20 +12,17 @@ export function HeroSection() {
             <div className="mx-auto max-w-3xl text-center">
                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
                   <Sparkles className="size-4" />
-                  Scheduling, simplified
+                  Scheduling made simple
                </div>
-
                <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl dark:text-white">
                   Schedule meetings{" "}
-                  <span className="text-blue-500">without endless emails</span>
+                  <span className="text-blue-500">without the back-and-forth</span>
                </h1>
-
                <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-                  MeetWise syncs with your Google Calendar, reflects your live
-                  availability, and lets others book time with you instantly—no more
-                  “when are you free?” conversations.
+                  MeetWise connects to your Google Calendar, shows your real-time
+                  availability, and lets anyone book time with you instantly. No
+                  more &quot;what time works for you?&quot; emails.
                </p>
-
                <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                   <SignedOut>
                      <SignUpButton mode="modal">
@@ -33,28 +30,26 @@ export function HeroSection() {
                            size="lg"
                            className="w-full bg-blue-500 text-base hover:bg-blue-600 sm:w-auto"
                         >
-                           Get Started Free
+                           Start Scheduling Free
                         </Button>
                      </SignUpButton>
-
                      <SignInButton mode="modal">
                         <Button
                            variant="outline"
                            size="lg"
                            className="w-full text-base sm:w-auto"
                         >
-                           Log In
+                           Sign In
                         </Button>
                      </SignInButton>
                   </SignedOut>
-
                   <SignedIn>
                      <Button
                         asChild
                         size="lg"
                         className="w-full bg-blue-500 text-base hover:bg-blue-600 sm:w-auto"
                      >
-                        <Link href="/availability">Open Dashboard</Link>
+                        <Link href="/availability">Go to Dashboard</Link>
                      </Button>
                   </SignedIn>
                </div>

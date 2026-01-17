@@ -60,7 +60,7 @@ export function AppHeader() {
                   {rightNavItems.map(renderNavItem)}
                </nav>
                <UserButton
-                  afterSwitchSessionUrl="/"
+                  afterSignOutUrl="/"
                   appearance={{
                      elements: {
                         avatarBox: "size-8",

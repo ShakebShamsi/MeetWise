@@ -12,7 +12,7 @@ export function LandingFooter() {
                         <Calendar className="size-4 text-white" />
                      </div>
                      <span className="font-bold text-zinc-900 dark:text-white">
-                        Meetwise
+                        MeetWise
                      </span>
                   </Link>
                   <Link
@@ -23,7 +23,7 @@ export function LandingFooter() {
                   </Link>
                </div>
                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Built with ❤️ by Shakeb Shamsi
+                  Built with Next.js, Sanity, and Clerk
                </p>
             </div>
          </div>
