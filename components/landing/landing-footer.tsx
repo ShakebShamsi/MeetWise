@@ -23,7 +23,7 @@ export function LandingFooter() {
                   </Link>
                </div>
                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Built with Next.js, Sanity, and Clerk
+                  Built with ❤️ by Shakeb Shamsi
                </p>
             </div>
          </div>
