@@ -1,5 +1,4 @@
 import { AppHeader } from "@/components/app-header";
-import { LandingFooter } from "@/components/landing/landing-footer";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
    return (
