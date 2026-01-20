@@ -3,7 +3,7 @@ import { Calendar } from "lucide-react";
 
 export function LandingFooter() {
    return (
-      <footer className="border-t bg-white py-12 dark:bg-zinc-950">
+      <footer className="border-t bg-white py-6 dark:bg-zinc-950">
          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                <div className="flex items-center gap-6">
