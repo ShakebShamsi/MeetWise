@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calendar } from "lucide-react";
+import { CalendarHeart } from "lucide-react";
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { UsersIcon } from "@sanity/icons";
@@ -13,7 +13,7 @@ export function LandingHeader() {
             <div className="flex items-center gap-8">
                <Link href="/" className="flex items-center gap-2">
                   <div className="flex size-9 items-center justify-center rounded-lg bg-blue-500">
-                     <Calendar className="size-5 text-white" />
+                     <CalendarHeart className="size-6 text-white" />
                   </div>
                   <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
                      MeetWise
