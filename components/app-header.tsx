@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
-import { Calendar, CalendarCheck, MessageSquare, Settings } from "lucide-react";
+import { CalendarCheck, CalendarDaysIcon, MessageSquare, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const leftNavItems = [
-   { href: "/availability", label: "Availability", icon: Calendar },
+   { href: "/availability", label: "Availability", icon: CalendarDaysIcon },
    { href: "/bookings", label: "Bookings", icon: CalendarCheck },
 ];
 
