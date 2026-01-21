@@ -23,8 +23,17 @@ export function LandingFooter() {
                   </Link>
                </div>
                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Built with ❤️ by Shakeb Shamsi
+                  Built with ❤️ by{" "}
+                  <Link
+                     href="https://shakeb.onrender.com"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  >
+                     Shakeb Shamsi
+                  </Link>
                </p>
+
             </div>
          </div>
       </footer>
