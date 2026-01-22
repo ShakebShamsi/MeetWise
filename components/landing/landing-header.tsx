@@ -21,7 +21,7 @@ export function LandingHeader() {
                </Link>
                <Link
                   href="/pricing"
-                  className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  className="text-base font-semibold text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                >
                   Pricing
                </Link>
