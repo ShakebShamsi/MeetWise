@@ -7,32 +7,39 @@ import { BookingsList } from "@/components/bookings/bookings-list";
 import { RefreshButton } from "@/components/ui/refresh-button";
 
 export default async function BookingsPage() {
-  const { userId } = await auth();
+   const { userId } = await auth();
 
-  if (!userId) {
-    redirect("/");
-  }
+   if (!userId) {
+      redirect("/");
+   }
 
-  const { data: bookings } = await sanityFetch({
-    query: HOST_BOOKINGS_BY_CLERK_ID_QUERY,
-    params: { clerkId: userId },
-  });
+   const { data: bookings } = await sanityFetch({
+      query: HOST_BOOKINGS_BY_CLERK_ID_QUERY,
+      params: { clerkId: userId },
+   });
 
-  const { activeBookings } = await processBookingsWithStatuses(bookings ?? []);
+   const { activeBookings } = await processBookingsWithStatuses(bookings ?? []);
 
-  return (
-    <main className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Your Bookings</h1>
-          <p className="mt-1 text-muted-foreground">
-            View and manage your upcoming meetings.
-          </p>
-        </div>
-        <RefreshButton />
-      </div>
+   return (
+      <main className="container mx-auto max-w-4xl px-4 py-10">
+         {/* Header */}
+         <div className="mb-10 flex items-center justify-between rounded-2xl border border-border/60 bg-background/60 p-6 shadow-sm backdrop-blur">
+            <div>
+               <h1 className="text-2xl font-semibold tracking-tight">
+                  Your Bookings
+               </h1>
+               <p className="mt-1 text-sm text-muted-foreground">
+                  View and manage your upcoming meetings.
+               </p>
+            </div>
 
-      <BookingsList bookings={activeBookings} />
-    </main>
-  );
+            <RefreshButton />
+         </div>
+
+         {/* Content */}
+         <div className="space-y-6">
+            <BookingsList bookings={activeBookings} />
+         </div>
+      </main>
+   );
 }
