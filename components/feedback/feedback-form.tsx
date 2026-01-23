@@ -26,50 +26,73 @@ export function FeedbackForm() {
          setSubmitted(true);
          setContent("");
 
-         setTimeout(() => {
-            setSubmitted(false);
-         }, 3000);
+         setTimeout(() => setSubmitted(false), 3000);
       });
    };
 
    if (submitted) {
       return (
-         <Card className="w-full max-w-md shadow-lg border-0">
-            <CardContent className="flex flex-col items-center justify-center py-16">
-               <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-green-100">
-                  <CheckCircle2 className="size-8 text-green-600" />
+         <Card className="w-full max-w-md border border-green-100/60 dark:border-green-900/40 shadow-xl rounded-2xl">
+            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+               <div className="mb-5 flex size-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                  <CheckCircle2 className="size-8 text-green-600 dark:text-green-400" />
                </div>
-               <p className="text-xl font-semibold">Thanks for your feedback!</p>
-               <p className="text-muted-foreground mt-1">We appreciate you taking the time.</p>
+               <p className="text-xl font-semibold tracking-tight">
+                  Thanks for your feedback!
+               </p>
+               <p className="mt-1 text-sm text-muted-foreground max-w-xs">
+                  Your input helps us shape MeetWise into something better for everyone.
+               </p>
             </CardContent>
          </Card>
       );
    }
 
    return (
-      <Card className="w-full max-w-md shadow-lg border-0">
-         <CardHeader className="text-center pb-2">
-            <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-blue-100">
-               <MessageSquare className="size-7 text-blue-600" />
+      <Card className="w-full max-w-md rounded-2xl border border-border/60 shadow-xl backdrop-blur-sm">
+         <CardHeader className="text-center pb-3">
+            <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+               <MessageSquare className="size-7 text-blue-600 dark:text-blue-400" />
             </div>
-            <CardTitle className="text-2xl font-semibold">Feature Feedback</CardTitle>
-            <CardDescription className="text-base mt-2">
-               What features would you like to see? Let us know how we can make
-               MeetWise better for you.
+
+            <CardTitle className="text-2xl font-semibold tracking-tight">
+               Feature Feedback
+            </CardTitle>
+
+            <CardDescription className="mt-2 text-sm leading-relaxed">
+               What features would you like to see? Share your ideas and help improve MeetWise
             </CardDescription>
          </CardHeader>
+
          <CardContent className="space-y-4 pt-4">
             <Textarea
                placeholder="I'd love to see a feature that..."
                value={content}
                onChange={(e) => setContent(e.target.value)}
                rows={5}
-               className="resize-none border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+               className="
+            resize-none rounded-xl
+            border-border/70
+            bg-background
+            focus-visible:ring-2
+            focus-visible:ring-blue-500
+            focus-visible:ring-offset-0
+            transition
+          "
             />
+
             <Button
                onClick={handleSubmit}
                disabled={isPending || !content.trim()}
-               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-5"
+               className="
+            w-full h-12
+            rounded-xl
+            bg-blue-600 hover:bg-blue-700
+            text-white font-medium
+            transition-all
+            active:scale-[0.98]
+            disabled:opacity-60
+          "
             >
                {isPending ? "Submitting..." : "Submit Feedback"}
             </Button>
