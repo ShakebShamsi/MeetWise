@@ -31,7 +31,7 @@ export function CTASection() {
                         size="lg"
                         className="bg-white text-base text-blue-600 hover:bg-blue-50"
                      >
-                        <Link href="/availability">Go to Dashboard</Link>
+                        <Link href="/availability">Let's Start</Link>
                      </Button>
                   </SignedIn>
                </div>
