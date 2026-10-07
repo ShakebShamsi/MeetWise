@@ -45,6 +45,7 @@ export function AppHeader() {
          <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4 sm:gap-8">
                <Link href="/availability" className="flex items-center gap-2">
+                  <img src="/favicon-black.ico" alt="MeetWise" width={32} height={32} className="translate-y-0.5" />
                   <span className="text-xl font-bold tracking-tight text-white">
                      MeetWise
                   </span>

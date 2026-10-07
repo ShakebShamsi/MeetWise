@@ -8,10 +8,10 @@ export function LandingFooter() {
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                <div className="flex items-center gap-6">
                   <Link href="/" className="flex items-center gap-2">
-                     <div className="flex size-8 items-center justify-center rounded-lg bg-blue-500">
-                        <Calendar className="size-4 text-white" />
-                     </div>
-                     <span className="font-bold text-zinc-900 dark:text-white">
+                     <span >
+                        <img src="/favicon-black.ico" alt="logo" width={28} height={28} className="translate-y-0.5" />
+                     </span>
+                     <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
                         MeetWise
                      </span>
                   </Link>
