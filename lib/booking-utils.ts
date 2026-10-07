@@ -21,12 +21,13 @@ import type {
 
 /**
  * Minimal interface for any booking that has Google Calendar event data.
- * Compatible with both HostBooking and HostUpcomingBooking from Sanity.
+ * The original booking type is preserved while adding the Google status.
  */
-export type BookingWithGoogleEvent = Pick<
-  HostBooking | HostUpcomingBooking,
-  "_id" | "googleEventId" | "guestEmail"
->;
+export type BookingWithGoogleEvent = {
+  _id: string;
+  googleEventId: string | null;
+  guestEmail: string;
+};
 
 export type ProcessedBooking<T extends BookingWithGoogleEvent> = T & {
   guestStatus?: AttendeeStatus;
