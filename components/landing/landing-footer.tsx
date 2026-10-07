@@ -25,12 +25,12 @@ export function LandingFooter() {
                <p className="text-sm text-zinc-500 dark:text-zinc-400">
                   Built with ❤️ by{" "}
                   <Link
-                     href="https://shakeb.onrender.com"
+                     href="https://synkodex.com"
                      target="_blank"
                      rel="noopener noreferrer"
                      className="font-medium text-blue-600 hover:underline dark:text-blue-400"
                   >
-                     Shakeb Shamsi
+                     SYNKODEX
                   </Link>
                </p>
 
