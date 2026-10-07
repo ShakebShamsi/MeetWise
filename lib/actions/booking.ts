@@ -1,27 +1,27 @@
 "use server";
 
-import { writeClient } from "@/sanity/lib/writeClient";
+import {
+  addMinutes,
+  endOfDay,
+  isWithinInterval,
+  parseISO,
+  startOfDay,
+} from "date-fns";
+import { computeAvailableDates } from "@/lib/availability";
+import { getHostBookingQuotaStatus } from "@/lib/features";
+import {
+  fetchCalendarEvents,
+  getCalendarClient,
+  getEventAttendeeStatus,
+} from "@/lib/google-calendar";
 import { client } from "@/sanity/lib/client";
+import { writeClient } from "@/sanity/lib/writeClient";
+import { BOOKINGS_IN_RANGE_QUERY } from "@/sanity/queries/bookings";
+import { MEETING_TYPE_BY_SLUGS_QUERY } from "@/sanity/queries/meetingTypes";
 import {
   HOST_BY_SLUG_WITH_TOKENS_QUERY,
   type HostWithTokens,
 } from "@/sanity/queries/users";
-import { BOOKINGS_IN_RANGE_QUERY } from "@/sanity/queries/bookings";
-import { MEETING_TYPE_BY_SLUGS_QUERY } from "@/sanity/queries/meetingTypes";
-import {
-  getCalendarClient,
-  getEventAttendeeStatus,
-  fetchCalendarEvents,
-} from "@/lib/google-calendar";
-import { getHostBookingQuotaStatus } from "@/lib/features";
-import {
-  startOfDay,
-  endOfDay,
-  addMinutes,
-  isWithinInterval,
-  parseISO,
-} from "date-fns";
-import { computeAvailableDates } from "@/lib/availability";
 
 // ============================================================================
 // Types
@@ -52,7 +52,7 @@ export type BookingData = {
 export async function getAvailableSlots(
   hostSlug: string,
   date: Date,
-  slotDurationMinutes = 30
+  slotDurationMinutes = 30,
 ): Promise<TimeSlot[]> {
   // 1. Get host with availability and connected accounts
   const host = await client.fetch(HOST_BY_SLUG_WITH_TOKENS_QUERY, {
@@ -107,7 +107,7 @@ export async function getAvailableSlots(
             const status = await getEventAttendeeStatus(
               defaultAccount,
               booking.googleEventId,
-              booking.guestEmail
+              booking.guestEmail,
             );
             if (status === "declined") {
               declinedBookingIds.add(booking._id);
@@ -115,20 +115,20 @@ export async function getAvailableSlots(
           } catch {
             // If we can't check status, assume booking is still valid
           }
-        })
+        }),
     );
   }
 
   // Filter out declined bookings - those slots are available again
   const activeBookings = existingBookings.filter(
-    (b) => !declinedBookingIds.has(b._id)
+    (b) => !declinedBookingIds.has(b._id),
   );
 
   // 5. Get Google Calendar busy times
   const busyTimes = await getGoogleBusyTimes(
     host.connectedAccounts,
     dayStart,
-    dayEnd
+    dayEnd,
   );
 
   // 6. Generate time slots from availability
@@ -182,7 +182,7 @@ export async function getAvailableDates(
   hostSlug: string,
   startDate: Date,
   endDate: Date,
-  slotDurationMinutes = 30
+  slotDurationMinutes = 30,
 ): Promise<string[]> {
   // 1. Get host with availability
   const host = await client.fetch(HOST_BY_SLUG_WITH_TOKENS_QUERY, {
@@ -206,7 +206,7 @@ export async function getAvailableDates(
     busyTimes = await getGoogleBusyTimes(
       host.connectedAccounts,
       startDate,
-      endDate
+      endDate,
     );
   } catch {
     // Continue without busy times if fetch fails
@@ -219,7 +219,7 @@ export async function getAvailableDates(
     startDate,
     endDate,
     slotDurationMinutes,
-    busyTimes
+    busyTimes,
   );
 }
 
@@ -227,7 +227,7 @@ export async function getAvailableDates(
  * Create a booking
  */
 export async function createBooking(
-  data: BookingData
+  data: BookingData,
 ): Promise<{ _id: string }> {
   // 1. Get the host
   const host = await client.fetch(HOST_BY_SLUG_WITH_TOKENS_QUERY, {
@@ -264,7 +264,7 @@ export async function createBooking(
   const isAvailable = await checkSlotAvailable(
     host,
     data.startTime,
-    data.endTime
+    data.endTime,
   );
 
   if (!isAvailable) {
@@ -281,44 +281,49 @@ export async function createBooking(
   if (defaultAccount?.accessToken && defaultAccount?.refreshToken) {
     try {
       const calendar = await getCalendarClient(defaultAccount);
+      if (!calendar) {
+        console.warn(
+          `Skipping Google event creation for ${host.email}: token refresh failed.`,
+        );
+      } else {
+        // Build event summary with meeting type if available
+        const summary = meetingTypeName
+          ? `${meetingTypeName}: ${host.name} x ${data.guestName}`
+          : `Meeting: ${host.name} x ${data.guestName}`;
 
-      // Build event summary with meeting type if available
-      const summary = meetingTypeName
-        ? `${meetingTypeName}: ${host.name} x ${data.guestName}`
-        : `Meeting: ${host.name} x ${data.guestName}`;
-
-      const event = await calendar.events.insert({
-        calendarId: "primary",
-        sendUpdates: "all", // Sends email invites to attendees
-        conferenceDataVersion: 1, // Required for conference data
-        requestBody: {
-          summary,
-          description: data.notes || undefined,
-          start: {
-            dateTime: data.startTime.toISOString(),
-          },
-          end: {
-            dateTime: data.endTime.toISOString(),
-          },
-          attendees: [
-            { email: host.email, responseStatus: "accepted" },
-            { email: data.guestEmail },
-          ],
-          conferenceData: {
-            createRequest: {
-              requestId: `booking-${Date.now()}-${Math.random()
-                .toString(36)
-                .substring(7)}`,
-              conferenceSolutionKey: {
-                type: "hangoutsMeet",
+        const event = await calendar.events.insert({
+          calendarId: "primary",
+          sendUpdates: "all", // Sends email invites to attendees
+          conferenceDataVersion: 1, // Required for conference data
+          requestBody: {
+            summary,
+            description: data.notes || undefined,
+            start: {
+              dateTime: data.startTime.toISOString(),
+            },
+            end: {
+              dateTime: data.endTime.toISOString(),
+            },
+            attendees: [
+              { email: host.email, responseStatus: "accepted" },
+              { email: data.guestEmail },
+            ],
+            conferenceData: {
+              createRequest: {
+                requestId: `booking-${Date.now()}-${Math.random()
+                  .toString(36)
+                  .substring(7)}`,
+                conferenceSolutionKey: {
+                  type: "hangoutsMeet",
+                },
               },
             },
           },
-        },
-      });
+        });
 
-      googleEventId = event.data.id ?? undefined;
-      meetLink = event.data.hangoutLink ?? undefined;
+        googleEventId = event.data.id ?? undefined;
+        meetLink = event.data.hangoutLink ?? undefined;
+      }
     } catch (error) {
       console.error("Failed to create Google Calendar event:", error);
       // Continue without calendar event - booking still valid
@@ -355,12 +360,12 @@ export async function createBooking(
 export async function getGoogleBusyTimes(
   connectedAccounts: HostWithTokens["connectedAccounts"],
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): Promise<Array<{ start: Date; end: Date }>> {
   const events = await fetchCalendarEvents(
     connectedAccounts ?? [],
     startDate,
-    endDate
+    endDate,
   );
 
   return events.map((event) => ({
@@ -375,7 +380,7 @@ export async function getGoogleBusyTimes(
 async function checkSlotAvailable(
   host: HostWithTokens,
   startTime: Date,
-  endTime: Date
+  endTime: Date,
 ): Promise<boolean> {
   const existingBookings = await client.fetch(BOOKINGS_IN_RANGE_QUERY, {
     hostId: host._id,
@@ -407,7 +412,7 @@ async function checkSlotAvailable(
             const status = await getEventAttendeeStatus(
               defaultAccount,
               booking.googleEventId,
-              booking.guestEmail
+              booking.guestEmail,
             );
             if (status === "declined") {
               declinedBookingIds.add(booking._id);
@@ -415,7 +420,7 @@ async function checkSlotAvailable(
           } catch {
             // If we can't check status, assume booking is still valid
           }
-        })
+        }),
     );
   }
 

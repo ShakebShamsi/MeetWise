@@ -1,9 +1,9 @@
 import { google } from "googleapis";
-import { writeClient } from "@/sanity/lib/writeClient";
 import { client } from "@/sanity/lib/client";
+import { writeClient } from "@/sanity/lib/writeClient";
 import {
-  USER_ID_BY_ACCOUNT_KEY_QUERY,
   type ConnectedAccountWithTokens,
+  USER_ID_BY_ACCOUNT_KEY_QUERY,
 } from "@/sanity/queries/users";
 
 // OAuth2 client configuration
@@ -11,7 +11,7 @@ export function createOAuth2Client() {
   return new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI
+    process.env.GOOGLE_REDIRECT_URI,
   );
 }
 
@@ -60,8 +60,12 @@ export async function getGoogleUserInfo(accessToken: string) {
   };
 }
 
-// Get a calendar client for a specific connected account
-export async function getCalendarClient(account: ConnectedAccountWithTokens) {
+// Get a calendar client for a specific connected account.
+// Returns null when the stored refresh token is no longer valid so the
+// unavailable account can be skipped without crashing the page.
+export async function getCalendarClient(
+  account: ConnectedAccountWithTokens,
+): Promise<ReturnType<typeof google.calendar> | null> {
   const oauth2Client = createOAuth2Client();
 
   oauth2Client.setCredentials({
@@ -86,9 +90,11 @@ export async function getCalendarClient(account: ConnectedAccountWithTokens) {
       });
 
       oauth2Client.setCredentials(credentials);
-    } catch (error) {
-      console.error("Failed to refresh token:", error);
-      throw new Error("Token refresh failed. Please reconnect your account.");
+    } catch {
+      console.error(
+        `Google calendar token expired for ${account.email}. Reconnect the account.`,
+      );
+      return null;
     }
   }
 
@@ -98,7 +104,7 @@ export async function getCalendarClient(account: ConnectedAccountWithTokens) {
 // Update account tokens in Sanity after refresh
 async function updateAccountTokens(
   accountKey: string,
-  tokens: { accessToken: string; expiryDate: number }
+  tokens: { accessToken: string; expiryDate: number },
 ) {
   // Find the user with this account and update the tokens
   const user = await client.fetch(USER_ID_BY_ACCOUNT_KEY_QUERY, { accountKey });
@@ -138,7 +144,7 @@ export type GoogleCalendarEvent = {
 export async function fetchCalendarEvents(
   accounts: ConnectedAccountWithTokens[],
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): Promise<GoogleCalendarEvent[]> {
   const events: GoogleCalendarEvent[] = [];
 
@@ -147,6 +153,8 @@ export async function fetchCalendarEvents(
 
     try {
       const calendar = await getCalendarClient(account);
+      if (!calendar) continue;
+
       const { data } = await calendar.events.list({
         calendarId: "primary",
         timeMin: startDate.toISOString(),
@@ -197,17 +205,19 @@ export type AttendeeStatus =
 export async function getEventAttendeeStatus(
   account: ConnectedAccountWithTokens,
   eventId: string,
-  guestEmail: string
+  guestEmail: string,
 ): Promise<AttendeeStatus> {
   try {
     const calendar = await getCalendarClient(account);
+    if (!calendar) return "unknown";
+
     const response = await calendar.events.get({
       calendarId: "primary",
       eventId,
     });
 
     const attendee = response.data.attendees?.find(
-      (a) => a.email?.toLowerCase() === guestEmail.toLowerCase()
+      (a) => a.email?.toLowerCase() === guestEmail.toLowerCase(),
     );
 
     if (!attendee?.responseStatus) {
@@ -227,10 +237,14 @@ export async function getEventAttendeeStatuses(
   account: ConnectedAccountWithTokens,
   eventId: string,
   _hostEmail: string,
-  guestEmail: string
+  guestEmail: string,
 ): Promise<{ hostStatus: AttendeeStatus; guestStatus: AttendeeStatus }> {
   try {
     const calendar = await getCalendarClient(account);
+    if (!calendar) {
+      return { hostStatus: "unknown", guestStatus: "unknown" };
+    }
+
     const response = await calendar.events.get({
       calendarId: "primary",
       eventId,
@@ -243,7 +257,7 @@ export async function getEventAttendeeStatuses(
 
     // Event exists and is not cancelled - get guest status
     const guestAttendee = response.data.attendees?.find(
-      (a) => a.email?.toLowerCase() === guestEmail.toLowerCase()
+      (a) => a.email?.toLowerCase() === guestEmail.toLowerCase(),
     );
 
     return {

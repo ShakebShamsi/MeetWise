@@ -1,20 +1,20 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { writeClient } from "@/sanity/lib/writeClient";
-import { client } from "@/sanity/lib/client";
 import {
-  USER_WITH_TOKENS_QUERY,
-  type ConnectedAccountWithTokens,
-} from "@/sanity/queries/users";
+  type AttendeeStatus,
+  fetchCalendarEvents,
+  getCalendarClient,
+  getEventAttendeeStatuses,
+  revokeGoogleToken,
+} from "@/lib/google-calendar";
+import { client } from "@/sanity/lib/client";
+import { writeClient } from "@/sanity/lib/writeClient";
 import { BOOKING_WITH_HOST_CALENDAR_QUERY } from "@/sanity/queries/bookings";
 import {
-  getCalendarClient,
-  revokeGoogleToken,
-  getEventAttendeeStatuses,
-  fetchCalendarEvents,
-  type AttendeeStatus,
-} from "@/lib/google-calendar";
+  type ConnectedAccountWithTokens,
+  USER_WITH_TOKENS_QUERY,
+} from "@/sanity/queries/users";
 
 // ============================================================================
 // Types
@@ -47,7 +47,7 @@ export async function getUserConnectedAccountsCount(): Promise<number> {
  */
 export async function getGoogleBusyTimes(
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): Promise<BusySlot[]> {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -60,7 +60,7 @@ export async function getGoogleBusyTimes(
   const events = await fetchCalendarEvents(
     user.connectedAccounts,
     startDate,
-    endDate
+    endDate,
   );
 
   return events.map((event) => ({
@@ -75,7 +75,7 @@ export async function getGoogleBusyTimes(
  * Disconnect a Google account
  */
 export async function disconnectGoogleAccount(
-  accountKey: string
+  accountKey: string,
 ): Promise<void> {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -95,7 +95,7 @@ export async function disconnectGoogleAccount(
   // Check if this was the default account
   const wasDefault = account.isDefault;
   const remainingAccounts = user.connectedAccounts?.filter(
-    (a) => a._key !== accountKey
+    (a) => a._key !== accountKey,
   );
 
   // Remove the account from Sanity
@@ -121,7 +121,7 @@ export async function disconnectGoogleAccount(
  * Set a connected account as the default for new bookings
  */
 export async function setDefaultCalendarAccount(
-  accountKey: string
+  accountKey: string,
 ): Promise<void> {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -178,6 +178,8 @@ export async function cancelBooking(bookingId: string): Promise<void> {
     if (account.accessToken && account.refreshToken) {
       try {
         const calendar = await getCalendarClient(account);
+        if (!calendar) return;
+
         await calendar.events.delete({
           calendarId: "primary",
           eventId: booking.googleEventId,
@@ -207,12 +209,14 @@ async function cleanupCancelledBooking(
   account: ConnectedAccountWithTokens,
   bookingId: string,
   googleEventId: string,
-  eventStillExists: boolean
+  eventStillExists: boolean,
 ): Promise<void> {
   // Delete Google Calendar event if it still exists
   if (eventStillExists && account.accessToken && account.refreshToken) {
     try {
       const calendar = await getCalendarClient(account);
+      if (!calendar) return;
+
       await calendar.events.delete({
         calendarId: "primary",
         eventId: googleEventId,
@@ -240,7 +244,7 @@ export async function getBookingAttendeeStatuses(
     id: string;
     googleEventId: string | null;
     guestEmail: string;
-  }>
+  }>,
 ): Promise<Record<string, BookingStatuses>> {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -269,7 +273,7 @@ export async function getBookingAttendeeStatuses(
           account,
           booking.googleEventId,
           hostEmail,
-          booking.guestEmail
+          booking.guestEmail,
         );
 
         // Event is cancelled if deleted OR guest declined (no meeting will happen)
@@ -283,11 +287,11 @@ export async function getBookingAttendeeStatuses(
             account,
             booking.id,
             booking.googleEventId,
-            hostStatus !== "declined"
+            hostStatus !== "declined",
           );
         }
       }
-    })
+    }),
   );
 
   return statuses;
@@ -310,7 +314,7 @@ export async function getActivebookingIds(
     id: string;
     googleEventId: string | null;
     guestEmail: string;
-  }>
+  }>,
 ): Promise<Set<string>> {
   const activeIds = new Set<string>();
 
@@ -349,7 +353,7 @@ export async function getActivebookingIds(
           account,
           booking.googleEventId,
           hostAccount.email,
-          booking.guestEmail
+          booking.guestEmail,
         );
 
         const isCancelled =
@@ -361,7 +365,7 @@ export async function getActivebookingIds(
             account,
             booking.id,
             booking.googleEventId,
-            hostStatus !== "declined"
+            hostStatus !== "declined",
           );
         } else {
           // Only add to active if not cancelled
@@ -372,7 +376,7 @@ export async function getActivebookingIds(
         // On error, assume active to avoid blocking valid slots
         activeIds.add(booking.id);
       }
-    })
+    }),
   );
 
   return activeIds;
